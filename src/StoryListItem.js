@@ -12,7 +12,7 @@ import {
     Platform,
     SafeAreaView
 } from "react-native";
-import type {IUserStoryItem} from "./interfaces/IUserStory";
+// import type {IUserStoryItem} from "./interfaces/IUserStory";
 import {usePrevious} from "./helpers/StateHelpers";
 import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
@@ -237,9 +237,9 @@ export const StoryListItem = (props: Props) => {
                     <TouchableOpacity onPress={() => {
                         if (props.onClosePress) {
                             props.onClosePress();
-                             navigation.navigate('ProfileWrapper',{
-                             data: props.profileId,
-                        });
+                        //      navigation.navigate('ProfileWrapper',{
+                        //      data: props.profileId,
+                        // });
                         }
                     }}>
                         <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 15}}>
