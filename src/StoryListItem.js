@@ -198,7 +198,7 @@ export const StoryListItem = (props: Props) => {
         >
             <SafeAreaView>
                 <View style={styles.backgroundContainer}>
-                    {content[current].type.startsWith("video") ?
+                    {content[current] ?
                     <Video 
                         source={{uri: content[current].image}} 
                         ref={ref => (videoPlayer.current = ref)} 

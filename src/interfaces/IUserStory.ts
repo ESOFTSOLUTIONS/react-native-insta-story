@@ -10,4 +10,5 @@ export interface IUserStoryItem {
     story_image: string,
     onPress?: any,
     swipeText?: string,
+    type?: string
 }
