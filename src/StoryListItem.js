@@ -16,7 +16,7 @@ import {
 import {usePrevious} from "./helpers/StateHelpers";
 import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
 
 const {width, height} = Dimensions.get('window');
@@ -38,7 +38,7 @@ type Props = {
 export const StoryListItem = (props: Props) => {
     const videoPlayer = React.useRef();
     const images = props.images;
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
 
     const [load, setLoad] = useState(true);
     const [pressed, setPressed] = useState(false);
