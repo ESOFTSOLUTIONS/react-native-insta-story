@@ -12,7 +12,7 @@ import {
     Platform,
     SafeAreaView
 } from "react-native";
-// import type {IUserStoryItem} from "./interfaces/IUserStory";
+import type {IUserStoryItem} from "./interfaces/IUserStory";
 import {usePrevious} from "./helpers/StateHelpers";
 import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
