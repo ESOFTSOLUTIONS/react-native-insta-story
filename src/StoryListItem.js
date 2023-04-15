@@ -16,6 +16,7 @@ import type {IUserStoryItem} from "./interfaces/IUserStory";
 import {usePrevious} from "./helpers/StateHelpers";
 import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
+import Video from 'react-native-video';
 
 const {width, height} = Dimensions.get('window');
 
@@ -182,10 +183,19 @@ export const StoryListItem = (props: Props) => {
         >
             <SafeAreaView>
                 <View style={styles.backgroundContainer}>
+                {content[current].type.startsWith("video") ?
+                    <Video 
+                        source={{uri: content[current].video}} 
+                        ref={ref => (videoPlayer.current = ref)} 
+                        resizeMode={'contain'}
+                        onLoad={onLoad}
+                        onEnd={onEnd}
+                        style={styles.video}
+                        /> : 
                     <Image onLoadEnd={() => start()}
-                           source={{uri: content[current].image}}
-                           style={styles.image}
-                    />
+                        source={{uri: content[current].image}}
+                        style={styles.image}
+                        /> }
                     {load && <View style={styles.spinnerContainer}>
                         <ActivityIndicator size="large" color={'white'}/>
                     </View>}
