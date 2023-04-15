@@ -16,34 +16,39 @@ import type {IUserStoryItem} from "./interfaces/IUserStory";
 import {usePrevious} from "./helpers/StateHelpers";
 import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
+import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
 
 const {width, height} = Dimensions.get('window');
 
 type Props = {
+    profileId: String,
     profileName: string,
     profileImage: string,
     duration?: number,
     onFinish?: function,
     onClosePress: function,
     key: number,
-    swipeText?: string,
+    description?: string,
     customSwipeUpComponent?: any,
     customCloseComponent?: any,
-    stories: IUserStoryItem[]
+    images: IUserStoryItem[]
 };
 
 export const StoryListItem = (props: Props) => {
-    const stories = props.stories;
+    const videoPlayer = React.useRef();
+    const images = props.images;
+    const navigation = useNavigation();
 
     const [load, setLoad] = useState(true);
     const [pressed, setPressed] = useState(false);
     const [content, setContent] = useState(
-        stories.map((x) => {
+        images.map((x) => {
             return {
-                image: x.story_image,
+                image: x.title,
                 onPress: x.onPress,
-                swipeText: x.swipeText,
+                type: x.type,
+                description: x.description,
                 finish: 0
             }
         }));
@@ -97,10 +102,12 @@ export const StoryListItem = (props: Props) => {
         startAnimation();
     }
 
-    function startAnimation() {
+    function startAnimation(duration) {
+        const time = content[current].type.startsWith("video") ? duration : 10000
         Animated.timing(progress, {
             toValue: 1,
-            duration: props.duration,
+            duration: time,
+            // duration: props.duration,
             useNativeDriver: false
         }).start(({finished}) => {
             if (finished) {
@@ -169,7 +176,15 @@ export const StoryListItem = (props: Props) => {
         }
     }
 
-    const swipeText = content?.[current]?.swipeText || props.swipeText || 'Swipe Up';
+    const onLoad = async meta => {
+        startAnimation(Math.ceil(meta.duration) * 1000)
+    };
+
+    const onEnd= () => {
+        start()
+    };
+
+    const description = content?.[current]?.description || props.description || '';
 
     return (
         <GestureRecognizer
@@ -183,25 +198,26 @@ export const StoryListItem = (props: Props) => {
         >
             <SafeAreaView>
                 <View style={styles.backgroundContainer}>
-                {content[current].type.startsWith("video") ?
+                    {content[current].type.startsWith("video") ?
                     <Video 
-                        source={{uri: content[current].video}} 
+                        source={{uri: content[current].image}} 
                         ref={ref => (videoPlayer.current = ref)} 
                         resizeMode={'contain'}
+                        // onLoadStart={onLoad}
                         onLoad={onLoad}
                         onEnd={onEnd}
                         style={styles.video}
-                        /> : 
+                    /> : 
                     <Image onLoadEnd={() => start()}
                         source={{uri: content[current].image}}
                         style={styles.image}
-                        /> }
+                    /> }
                     {load && <View style={styles.spinnerContainer}>
                         <ActivityIndicator size="large" color={'white'}/>
                     </View>}
                 </View>
             </SafeAreaView>
-            <View style={{flexDirection: 'column', flex: 1,}}>
+            <View style={{flexDirection: 'column', flex: 1}}>
                 <View style={styles.animationBarContainer}>
                     {content.map((index, key) => {
                         return (
@@ -218,12 +234,21 @@ export const StoryListItem = (props: Props) => {
                     })}
                 </View>
                 <View style={styles.userContainer}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Image style={styles.avatarImage}
-                               source={{uri: props.profileImage}}
-                        />
-                        <Text style={styles.avatarText}>{props.profileName}</Text>
-                    </View>
+                    <TouchableOpacity onPress={() => {
+                        if (props.onClosePress) {
+                            props.onClosePress();
+                             navigation.navigate('ProfileWrapper',{
+                             data: props.profileId,
+                        });
+                        }
+                    }}>
+                        <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 15}}>
+                            <Image style={styles.avatarImage}
+                                source={{uri: props.profileImage}}
+                            />
+                            <Text style={styles.avatarText}>{props.profileName}</Text>
+                        </View>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         if (props.onClosePress) {
                             props.onClosePress();
@@ -267,18 +292,15 @@ export const StoryListItem = (props: Props) => {
                         <View style={{flex: 1}}/>
                     </TouchableWithoutFeedback>
                 </View>
+            <Text style={{flex: 1, color: 'white', fontSize: 15, textAlign: 'center', textAlignVertical: 'center', marginBottom: '-20%', marginLeft: 15, marginRight: 15}}>{description}</Text>
             </View>
             {content[current].onPress &&
                 <TouchableOpacity activeOpacity={1}
-                                  onPress={onSwipeUp}
-                                  style={styles.swipeUpBtn}>
-                    {props.customSwipeUpComponent ?
-                        props.customSwipeUpComponent :
-                        <>
-                            <Text style={{color: 'white', marginTop: 5}}></Text>
-                            <Text style={{color: 'white', marginTop: 5}}>{swipeText}</Text>
-                        </>
-                    }
+                    onPress={onSwipeUp}
+                    style={styles.swipeUpBtn}>
+                <>
+                    <Text style={{color: 'white',fontSize: 50, marginBottom: 5}}>{props.profileName}</Text>
+                </>
                 </TouchableOpacity>}
         </GestureRecognizer>
     )
@@ -299,7 +321,7 @@ const styles = StyleSheet.create({
     image: {
         width: width,
         height: height,
-        resizeMode: 'cover'
+        resizeMode: 'contain'
     },
     backgroundContainer: {
         position: 'absolute',
@@ -330,14 +352,14 @@ const styles = StyleSheet.create({
         marginHorizontal: 2,
     },
     userContainer: {
-        height: 50,
+        height: 70,
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 15,
     },
     avatarImage: {
-        height: 30,
-        width: 30,
+        height: 40,
+        width: 40,
         borderRadius: 100
     },
     avatarText: {
@@ -348,12 +370,12 @@ const styles = StyleSheet.create({
     closeIconContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: 50,
+        height: 70,
         paddingHorizontal: 15,
     },
     pressContainer: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     swipeUpBtn: {
         position: 'absolute',
@@ -361,5 +383,10 @@ const styles = StyleSheet.create({
         left: 0,
         alignItems: 'center',
         bottom: Platform.OS == 'ios' ? 20 : 50
-    }
+    },
+    video: {
+        width: width,
+        height: height-50,
+        resizeMode: 'contain'
+    },
 });
