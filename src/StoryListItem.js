@@ -15,7 +15,7 @@ import {
 import {usePrevious} from "./helpers/StateHelpers";
 import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
-import { Video } from 'expo-av';
+import Video from 'react-native-video';
 
 const {width, height} = Dimensions.get('window');
 
