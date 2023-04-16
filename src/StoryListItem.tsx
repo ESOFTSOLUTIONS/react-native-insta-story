@@ -14,6 +14,7 @@ import {
   PanResponderGestureState,
 } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
+import Video from 'react-native-video';
 
 import { usePrevious, isNullOrWhitespace } from './helpers';
 import {
@@ -192,11 +193,18 @@ export const StoryListItem = ({
     >
       <SafeAreaView>
         <View style={styles.backgroundContainer}>
-          <Image
-            onLoadEnd={() => start()}
-            source={{ uri: content[current].story_image }}
-            style={styles.image}
-          />
+          {content[current].type?.startsWith('video') ? (
+            <Video
+              src={{ uri: content[current].story_image }}
+              style={styles.image}
+            />
+          ) : (
+            <Image
+              onLoadEnd={() => start()}
+              source={{ uri: content[current].story_image }}
+              style={styles.image}
+            />
+          )}
           {load && (
             <View style={styles.spinnerContainer}>
               <ActivityIndicator size="large" color={'white'} />

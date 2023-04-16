@@ -20,6 +20,7 @@ export interface IUserStoryItem {
   swipeText?: string;
   /** FOR INTERNAL USE ONLY */
   finish?: number;
+  type?: string;
 }
 
 interface SharedCircleListProps {
