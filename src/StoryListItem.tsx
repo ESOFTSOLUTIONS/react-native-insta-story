@@ -195,7 +195,7 @@ export const StoryListItem = ({
         <View style={styles.backgroundContainer}>
           {content[current].type?.startsWith('video') ? (
             <Video
-              src={{ uri: content[current].story_image }}
+              source={{ uri: content[current].story_image }}
               style={styles.image}
             />
           ) : (
