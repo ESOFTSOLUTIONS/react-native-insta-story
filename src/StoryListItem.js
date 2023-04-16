@@ -181,7 +181,6 @@ const StoryListItem = (props) => {
                     <Video 
                         source={{uri: content[current].image}} 
                         ref={ref => (videoPlayer.current = ref)} 
-                        resizeMode={'contain'}
                         // onLoadStart={onLoad}
                         onLoad={onLoad}
                         onEnd={onEnd}
@@ -356,5 +355,9 @@ const styles = StyleSheet.create({
         left: 0,
         alignItems: 'center',
         bottom: Platform.OS == 'ios' ? 20 : 50
-    }
+    },
+    video: {
+        width: width,
+        height: height-50,
+    },
 });
