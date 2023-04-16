@@ -12,6 +12,8 @@ import {
     Platform,
     SafeAreaView
 } from "react-native";
+import {usePrevious} from "./helpers/StateHelpers";
+import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 const {width, height} = Dimensions.get('window');
