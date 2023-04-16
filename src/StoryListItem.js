@@ -32,8 +32,8 @@ type Props = {
     stories: IUserStoryItem[]
 };
 
-export const StoryListItem = (props: Props) => {
-    const stories = props.stories;
+export const StoryListItem = (props: Props, stories) => {
+    // const stories = props.stories;
 
     const [load, setLoad] = useState(true);
     const [pressed, setPressed] = useState(false);
