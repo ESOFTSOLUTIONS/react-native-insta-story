@@ -15,10 +15,12 @@ import {
 import {usePrevious} from "./helpers/StateHelpers";
 import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
+import Video from 'react-native-video';
 
 const {width, height} = Dimensions.get('window');
 
 const StoryListItem = (props) => {
+    const videoPlayer = React.useRef();
     const [load, setLoad] = useState(true);
     const [pressed, setPressed] = useState(false);
     const [content, setContent] = useState(
@@ -26,6 +28,7 @@ const StoryListItem = (props) => {
             return {
                 image: x.story_image,
                 onPress: x.onPress,
+                type: x.type,
                 swipeText: x.swipeText,
                 finish: 0
             }
@@ -152,6 +155,14 @@ const StoryListItem = (props) => {
         }
     }
 
+    const onLoad = async meta => {
+        startAnimation(Math.ceil(meta.duration) * 1000)
+    };
+
+    const onEnd= () => {
+        start()
+    };
+
     const swipeText = content?.[current]?.swipeText || props.swipeText || 'Swipe Up';
 
     return (
@@ -166,10 +177,20 @@ const StoryListItem = (props) => {
         >
             <SafeAreaView>
                 <View style={styles.backgroundContainer}>
+                {content[current].type.startsWith("video") ?
+                    <Video 
+                        source={{uri: content[current].image}} 
+                        ref={ref => (videoPlayer.current = ref)} 
+                        resizeMode={'contain'}
+                        // onLoadStart={onLoad}
+                        onLoad={onLoad}
+                        onEnd={onEnd}
+                        style={styles.video}
+                    /> : 
                     <Image onLoadEnd={() => start()}
-                           source={{uri: content[current].image}}
-                           style={styles.image}
-                    />
+                        source={{uri: content[current].image}}
+                        style={styles.image}
+                    /> }
                     {load && <View style={styles.spinnerContainer}>
                         <ActivityIndicator size="large" color={'white'}/>
                     </View>}
