@@ -10,9 +10,9 @@ const data = [
         stories: [
             {
                 story_id: 1,
-                story_image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjORKvjcbMRGYPR3QIs3MofoWkD4wHzRd_eg&usqp=CAU",
+                story_image: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
                 swipeText: 'Custom swipe text for this story',
-                type:'image',
+                type:'video',
                 onPress: () => console.log('story 1 swiped'),
             },
             {
