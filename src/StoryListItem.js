@@ -12,33 +12,15 @@ import {
     Platform,
     SafeAreaView
 } from "react-native";
-import type {IUserStoryItem} from "./interfaces/IUserStory";
-import {usePrevious} from "./helpers/StateHelpers";
-import {isNullOrWhitespace} from "./helpers/ValidationHelpers";
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 const {width, height} = Dimensions.get('window');
 
-type Props = {
-    profileName: string,
-    profileImage: string,
-    duration?: number,
-    onFinish?: function,
-    onClosePress: function,
-    key: number,
-    swipeText?: string,
-    customSwipeUpComponent?: any,
-    customCloseComponent?: any,
-    stories: IUserStoryItem[]
-};
-
-export const StoryListItem = (props: Props, stories) => {
-    // const stories = props.stories;
-
+const StoryListItem = (props) => {
     const [load, setLoad] = useState(true);
     const [pressed, setPressed] = useState(false);
     const [content, setContent] = useState(
-        stories.map((x) => {
+        props.stories.map((x) => {
             return {
                 image: x.story_image,
                 onPress: x.onPress,
@@ -71,23 +53,21 @@ export const StoryListItem = (props: Props, stories) => {
             } else {
                 x.finish = 0;
             }
-
-        })
-        setContent(data)
+        });
+        setContent(data);
         start();
     }, [props.currentPage]);
 
     const prevCurrent = usePrevious(current);
 
     useEffect(() => {
-        if (!isNullOrWhitespace(prevCurrent)) {
+        if (prevCurrent !== undefined) {
             if (current > prevCurrent && content[current - 1].image == content[current].image) {
                 start();
             } else if (current < prevCurrent && content[current + 1].image == content[current].image) {
                 start();
             }
         }
-
     }, [current]);
 
     function start() {
@@ -118,7 +98,9 @@ export const StoryListItem = (props: Props, stories) => {
     }
 
     function onSwipeDown() {
-        props?.onClosePress();
+        if (props.onClosePress) {
+            props.onClosePress();
+        }
     }
 
     const config = {
