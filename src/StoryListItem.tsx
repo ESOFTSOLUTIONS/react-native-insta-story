@@ -49,6 +49,7 @@ export const StoryListItem = ({
   );
 
   const [current, setCurrent] = useState(0);
+  const videoPlayer = useRef();
 
   const progress = useRef(new Animated.Value(0)).current;
 
@@ -177,6 +178,14 @@ export const StoryListItem = ({
     }
   }
 
+  const onLoad = async meta => {
+    startAnimation(Math.ceil(meta.duration) * 1000)
+};
+
+const onEnd= () => {
+    start()
+};
+
   const swipeText =
     content?.[current]?.swipeText || props.swipeText || 'Swipe Up';
 
@@ -196,14 +205,14 @@ export const StoryListItem = ({
           {content[current].type?.startsWith('video') ? (
             <Video
               source={{ uri: content[current].story_image }}
-              style={{
-                  width: Dimensions.get('window').height,
-                  height: Dimensions.get('window').width,
-                  minWidth: Dimensions.get('window').height,
-                  minHeight: Dimensions.get('window').width,
-                  transform: [{ rotate: '90deg'}]
-                }}
-                resizeMode={'stretch'}
+              ref={ref => videoPlayer.current = ref}
+              onLoad={onLoad}
+              onEnd={onEnd}
+              paused={pressed}
+              seek={duration}
+              style={styles.video}
+              resizeMode={'stretch'}
+              onTouchEnd={next}
             />
           ) : (
             <Image
@@ -319,71 +328,76 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-  },
-  image: {
+},
+image: {
     width: width,
     height: height,
-    resizeMode: 'cover',
-  },
-  backgroundContainer: {
+    resizeMode: 'contain'
+},
+backgroundContainer: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-  },
-  spinnerContainer: {
+},
+spinnerContainer: {
     zIndex: -100,
-    position: 'absolute',
+    position: "absolute",
     justifyContent: 'center',
     backgroundColor: 'black',
     alignSelf: 'center',
     width: width,
     height: height,
-  },
-  animationBarContainer: {
+},
+animationBarContainer: {
     flexDirection: 'row',
     paddingTop: 10,
     paddingHorizontal: 10,
-  },
-  animationBackground: {
+},
+animationBackground: {
     height: 2,
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'rgba(117, 117, 117, 0.5)',
     marginHorizontal: 2,
-  },
-  userContainer: {
-    height: 50,
+},
+userContainer: {
+    height: 70,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 15,
-  },
-  avatarImage: {
-    height: 30,
-    width: 30,
-    borderRadius: 100,
-  },
-  avatarText: {
+},
+avatarImage: {
+    height: 40,
+    width: 40,
+    borderRadius: 100
+},
+avatarText: {
     fontWeight: 'bold',
     color: 'white',
     paddingLeft: 10,
-  },
-  closeIconContainer: {
+},
+closeIconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
+    height: 70,
     paddingHorizontal: 15,
-  },
-  pressContainer: {
+},
+pressContainer: {
     flex: 1,
     flexDirection: 'row',
-  },
-  swipeUpBtn: {
+},
+swipeUpBtn: {
     position: 'absolute',
     right: 0,
     left: 0,
     alignItems: 'center',
-    bottom: Platform.OS == 'ios' ? 20 : 50,
-  },
+    bottom: Platform.OS == 'ios' ? 20 : 50
+},
+video: {
+    width: width,
+    height: height
+    // resizeMode: 'contain',
+},
 });
