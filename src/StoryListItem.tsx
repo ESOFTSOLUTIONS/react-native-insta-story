@@ -196,7 +196,14 @@ export const StoryListItem = ({
           {content[current].type?.startsWith('video') ? (
             <Video
               source={{ uri: content[current].story_image }}
-              style={styles.image}
+              style={{
+                  width: Dimensions.get('window').height,
+                  height: Dimensions.get('window').width,
+                  minWidth: Dimensions.get('window').height,
+                  minHeight: Dimensions.get('window').width,
+                  transform: [{ rotate: '90deg'}]
+                }}
+                resizeMode={'stretch'}
             />
           ) : (
             <Image
