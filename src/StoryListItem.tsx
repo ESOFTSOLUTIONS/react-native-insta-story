@@ -196,8 +196,8 @@ const onEnd= () => {
   return (
     <GestureRecognizer
       key={key}
-      onSwipeUp={onSwipeUp}
-      onSwipeDown={onSwipeDown}
+      // onSwipeUp={onSwipeUp}
+      // onSwipeDown={onSwipeDown}
       config={config}
       style={{
         flex: 1,
@@ -295,7 +295,7 @@ const onEnd= () => {
       {content[current].onPress && (
         <TouchableOpacity
           activeOpacity={1}
-          onPress={onSwipeUp}
+          // onPress={onSwipeUp}
           style={styles.swipeUpBtn}
         >
           {customSwipeUpComponent ? (

@@ -131,16 +131,16 @@ export const Story = ({
       );
     } else {
       return (
-        <AndroidCubeEffect
-          ref={cube}
-          callBackAfterSwipe={(x: any) => {
-            if (x != currentPage) {
-              setCurrentPage(parseInt(x));
-            }
-          }}
-        >
-          {renderStoryList()}
-        </AndroidCubeEffect>
+        // <AndroidCubeEffect
+        //   ref={cube}
+        //   callBackAfterSwipe={(x: any) => {
+        //     if (x != currentPage) {
+        //       setCurrentPage(parseInt(x));
+        //     }
+        //   }}
+        // >
+          renderStoryList()
+        // </AndroidCubeEffect>
       );
     }
   };
@@ -165,11 +165,11 @@ export const Story = ({
           width: Dimensions.get('window').width,
         }}
         isOpen={isModalOpen}
-        onClosed={() => setIsModalOpen(false)}
+        onClosed={() => setIsModalOpen(true)}
         position="center"
         swipeToClose
         swipeArea={250}
-        backButtonClose
+        // backButtonClose
         coverScreen={true}
       >
         {renderCube()}
