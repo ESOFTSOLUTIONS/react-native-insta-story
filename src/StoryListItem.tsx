@@ -113,7 +113,11 @@ export const StoryListItem = ({
       useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished) {
-        next();
+        if(current !== content.length - 1) {
+          next();
+        } else {
+          previous()
+        }
       }
     });
   }
@@ -147,7 +151,7 @@ export const StoryListItem = ({
       progress.setValue(0);
     } else {
       // the next content is empty
-      close('next');
+      // close('next');
     }
   }
 
@@ -162,7 +166,7 @@ export const StoryListItem = ({
       progress.setValue(0);
     } else {
       // the previous content is empty
-      close('previous');
+      // close('previous');
     }
   }
 
@@ -211,8 +215,10 @@ const onEnd= () => {
               paused={pressed}
               seek={duration}
               style={styles.video}
+              muted
+              repeat
               resizeMode={'stretch'}
-              onTouchEnd={next}
+              // onTouchStart={previous}
             />
           ) : (
             <Image
@@ -249,21 +255,7 @@ const onEnd= () => {
             <Image style={styles.avatarImage} source={{ uri: profileImage }} />
             <Text style={styles.avatarText}>{profileName}</Text>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              if (onClosePress) {
-                onClosePress();
-              }
-            }}
-          >
-            <View style={styles.closeIconContainer}>
-              {customCloseComponent ? (
-                customCloseComponent
-              ) : (
-                <Text style={{ color: 'white' }}>X</Text>
-              )}
-            </View>
-          </TouchableOpacity>
+         
         </View>
         <View style={styles.pressContainer}>
           <TouchableWithoutFeedback
@@ -274,8 +266,10 @@ const onEnd= () => {
               startAnimation();
             }}
             onPress={() => {
-              if (!pressed && !load) {
-                previous();
+              console.log(pressed)
+              previous();
+              if (!pressed && load) {
+                console.log('here')
               }
             }}
           >
@@ -289,8 +283,8 @@ const onEnd= () => {
               startAnimation();
             }}
             onPress={() => {
+              next();
               if (!pressed && !load) {
-                next();
               }
             }}
           >

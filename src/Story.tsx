@@ -44,6 +44,7 @@ export const Story = ({
 
   useEffect(() => {
     handleSeen();
+    _handleStoryItemPress()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 

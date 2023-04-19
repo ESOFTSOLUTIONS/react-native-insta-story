@@ -46,7 +46,7 @@ const StoryCircleListItem = ({
       <TouchableOpacity
         onPress={() => _handleItemPress(item)}
         style={[
-          styles.avatarWrapper,
+          // styles.avatarWrapper,
           {
             height: avatarWrapperSize,
             width: avatarWrapperSize,
