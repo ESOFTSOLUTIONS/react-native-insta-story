@@ -14,7 +14,8 @@ import {
   PanResponderGestureState,
 } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import Video from 'react-native-video';
+import { Video, ResizeMode } from 'expo-av';
+
 
 import { usePrevious, isNullOrWhitespace } from './helpers';
 import {
@@ -209,15 +210,17 @@ const onEnd= () => {
           {content[current].type?.startsWith('video') ? (
             <Video
               source={{ uri: content[current].story_image }}
-              ref={ref => videoPlayer.current = ref}
-              onLoad={onLoad}
-              onEnd={onEnd}
-              paused={pressed}
-              seek={duration}
+              ref={videoPlayer}
               style={styles.video}
-              muted
-              repeat
-              resizeMode={'stretch'}
+              onLoad={onLoad}
+              isLooping
+              onPlaybackStatusUpdate={(playbackStatus) => {
+                if(playbackStatus.didJustFinish && !playbackStatus.isLooping) {
+                  onEnd()
+                }
+              }}
+              volume={0.0}
+              resizeMode={ResizeMode.CONTAIN}
               // onTouchStart={previous}
             />
           ) : (
