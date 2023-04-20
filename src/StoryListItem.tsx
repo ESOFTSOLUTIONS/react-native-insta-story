@@ -42,6 +42,7 @@ export const StoryListItem = ({
 }: StoryListItemProps) => {
   const [load, setLoad] = useState<boolean>(true);
   const [pressed, setPressed] = useState<boolean>(false);
+  const [status, setStatus] = useState({})
   const [content, setContent] = useState<IUserStoryItem[]>(
     stories.map((x) => ({
       ...x,
@@ -215,12 +216,14 @@ const onEnd= () => {
               onLoad={onLoad}
               isLooping
               onPlaybackStatusUpdate={(playbackStatus) => {
+                setStatus(playbackStatus)
                 if(playbackStatus.didJustFinish && !playbackStatus.isLooping) {
                   onEnd()
                 }
               }}
+              shouldPlay
               volume={0.0}
-              resizeMode={ResizeMode.CONTAIN}
+              resizeMode={ResizeMode.STRETCH}
               // onTouchStart={previous}
             />
           ) : (
@@ -263,28 +266,33 @@ const onEnd= () => {
         <View style={styles.pressContainer}>
           <TouchableWithoutFeedback
             onPressIn={() => progress.stopAnimation()}
-            onLongPress={() => setPressed(true)}
+            onLongPress={() => {setPressed(true)
+            status.isPlaying ? videoPlayer.current.pauseAsync() : videoPlayer.current.playAsync();
+            }}
             onPressOut={() => {
               setPressed(false);
               startAnimation();
+              status.isPlaying ? videoPlayer.current.pauseAsync() : videoPlayer.current.playAsync();
             }}
             onPress={() => {
-              console.log(pressed)
               previous();
               if (!pressed && load) {
-                console.log('here')
               }
             }}
           >
             <View style={{ flex: 1 }} />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPressIn={() => progress.stopAnimation()}
-            onLongPress={() => setPressed(true)}
-            onPressOut={() => {
-              setPressed(false);
-              startAnimation();
-            }}
+            onPressIn={() => {}}
+            onLongPress={() => {setPressed(true)
+              status.isPlaying ? videoPlayer.current.pauseAsync() : videoPlayer.current.playAsync();
+              progress.stopAnimation()
+              }}
+              onPressOut={() => {
+                setPressed(false);
+                startAnimation();
+                status.isPlaying ? videoPlayer.current.pauseAsync() : videoPlayer.current.playAsync();
+              }}
             onPress={() => {
               next();
               if (!pressed && !load) {
