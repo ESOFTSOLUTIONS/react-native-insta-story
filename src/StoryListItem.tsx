@@ -151,6 +151,10 @@ export const StoryListItem = ({
       setContent(data);
       setCurrent(current + 1);
       progress.setValue(0);
+      if(videoPlayer.current) {
+        videoPlayer.current.setPositionAsync(0);
+        videoPlayer.current.playAsync();
+      }
     } else {
       // the next content is empty
       // close('next');
@@ -166,6 +170,10 @@ export const StoryListItem = ({
       setContent(data);
       setCurrent(current - 1);
       progress.setValue(0);
+      if(videoPlayer.current) {
+        videoPlayer.current.setPositionAsync(0);
+        videoPlayer.current.playAsync();
+      }
     } else {
       // the previous content is empty
       // close('previous');
