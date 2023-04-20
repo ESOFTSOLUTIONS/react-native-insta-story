@@ -20,6 +20,7 @@ export const Story = ({
   swipeText,
   customSwipeUpComponent,
   customCloseComponent,
+  customUpperTextComponent,
   avatarSize,
   showAvatarText,
   avatarTextStyle,
@@ -104,6 +105,7 @@ export const Story = ({
           swipeText={swipeText}
           customSwipeUpComponent={customSwipeUpComponent}
           customCloseComponent={customCloseComponent}
+          customUpperTextComponent={customUpperTextComponent}
           onClosePress={() => {
             setIsModalOpen(false);
             if (onClose) {

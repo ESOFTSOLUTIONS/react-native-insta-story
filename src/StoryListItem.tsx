@@ -34,6 +34,7 @@ export const StoryListItem = ({
   duration,
   customCloseComponent,
   customSwipeUpComponent,
+  customUpperTextComponent,
   onFinish,
   onClosePress,
   stories,
@@ -266,11 +267,12 @@ const onEnd= () => {
         </View>
         <View style={styles.userContainer}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image style={styles.avatarImage} source={{ uri: profileImage }} />
+            <Image style={styles.avatarImage} source={profileImage } />
             <Text style={styles.avatarText}>{profileName}</Text>
           </View>
          
         </View>
+        {customUpperTextComponent}
         <View style={styles.pressContainer}>
           <TouchableWithoutFeedback
             onPressIn={() => progress.stopAnimation()}

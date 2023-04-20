@@ -5,7 +5,7 @@ export type NextOrPrevious = 'next' | 'previous';
 
 export interface IUserStory {
   user_id: number;
-  user_image: string | undefined;
+  user_image: string ;
   user_name: string;
   stories: IUserStoryItem[];
   /** INTERNAL USE ONLY */
@@ -59,6 +59,7 @@ export interface StoryListItemProps {
   swipeText?: string;
   /** A custom swipe up component */
   customSwipeUpComponent?: ReactNode;
+  customUpperTextComponent?: ReactNode;
   /** A custom close component */
   customCloseComponent?: ReactNode;
   onFinish?: (props?: any) => any;
@@ -88,6 +89,8 @@ export interface StoryProps {
   swipeText?: string;
   /** A custom swipe up component */
   customSwipeUpComponent?: ReactNode;
+  customUpperTextComponent?: ReactNode;
+
   /** A custom close component */
   customCloseComponent?: ReactNode;
   /** Display username below avatars in FlatList */
