@@ -45,20 +45,20 @@ const StoryCircleListItem = ({
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => _handleItemPress(item)}
-        style={[
-          // styles.avatarWrapper,
-          {
-            height: avatarWrapperSize,
-            width: avatarWrapperSize,
-          },
-          !isPressed
-            ? {
-                borderColor: unPressedBorderColor ?? 'red',
-              }
-            : {
-                borderColor: pressedBorderColor ?? 'grey',
-              },
-        ]}
+        // style={[
+        //   // styles.avatarWrapper,
+        //   {
+        //     height: avatarWrapperSize,
+        //     width: avatarWrapperSize,
+        //   },
+        //   !isPressed
+        //     ? {
+        //         borderColor: unPressedBorderColor ?? 'red',
+        //       }
+        //     : {
+        //         borderColor: pressedBorderColor ?? 'grey',
+        //       },
+        // ]}
       >
         <Image
           style={{
