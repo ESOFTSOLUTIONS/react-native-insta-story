@@ -166,10 +166,11 @@ export const Story = ({
           height: Dimensions.get('window').height,
           width: Dimensions.get('window').width,
         }}
-        isOpen={isModalOpen}
+        isOpen={true}
         onClosed={() => setIsModalOpen(true)}
         position="center"
-        swipeToClose
+        swipeToClose={false}
+        startOpen
         swipeArea={250}
         // backButtonClose
         coverScreen={true}
