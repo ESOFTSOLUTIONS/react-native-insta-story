@@ -12,6 +12,7 @@ import {
   Platform,
   SafeAreaView,
   PanResponderGestureState,
+  Easing,
 } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { Video, ResizeMode } from 'expo-av';
@@ -50,6 +51,9 @@ export const StoryListItem = ({
       finish: 0,
     })),
   );
+  const [startTime, setStartTime] = useState(0)
+  const [animation, setAnimation] = useState(null)
+  const [remainingDuration, setRemainingDuration] = useState(duration)
 
   const [current, setCurrent] = useState(0);
   const videoPlayer = useRef();
@@ -110,33 +114,71 @@ export const StoryListItem = ({
   }
 
   function startAnimation() {
-    Animated.timing(progress, {
+    setStartTime(Date.now())
+    const anim =Animated.timing(progress, {
       toValue: 1,
-      duration: duration,
+      duration: remainingDuration,
       useNativeDriver: false,
-    }).start(({ finished }) => {
+      easing: Easing.linear
+    })
+    setAnimation(anim)
+    anim.start(({ finished }) => {
       if (finished) {
         if(current !== content.length - 1) {
           next();
+          setRemainingDuration(duration)
         } else {
+          setRemainingDuration(duration)
           previous()
         }
       }
     });
   }
 
-  function onSwipeUp(_props?: any) {
-    if (onClosePress) {
-      onClosePress();
-    }
-    if (content[current].onPress) {
-      content[current].onPress?.();
+  function pauseAnimation() {
+    animation.stop()
+    const elapsedTime = Date.now() - startTime
+    setRemainingDuration(remainingDuration - elapsedTime);
+
+  }
+  
+
+  function resumeAnimation() {
+    if (animation) {
+      const newAnimation = Animated.timing(progress, {
+        toValue: 1,
+        duration: remainingDuration,
+        useNativeDriver: false,
+        easing: Easing.linear
+      });
+      setAnimation(newAnimation);
+      newAnimation.start(({ finished }) => {
+        if (finished) {
+          if (current !== content.length - 1) {
+            next();
+            setRemainingDuration(duration)
+          } else {
+            setRemainingDuration(duration)
+            previous();
+          }
+        }
+      });
+      setStartTime(Date.now());
     }
   }
 
-  function onSwipeDown(_props?: any) {
-    onClosePress();
-  }
+  // function onSwipeUp(_props?: any) {
+  //   if (onClosePress) {
+  //     onClosePress();
+  //   }
+  //   if (content[current].onPress) {
+  //     content[current].onPress?.();
+  //   }
+  // }
+
+  // function onSwipeDown(_props?: any) {
+  //   onClosePress();
+  // }
 
   const config = {
     velocityThreshold: 0.3,
@@ -275,13 +317,15 @@ const onEnd= () => {
         {customUpperTextComponent}
         <View style={styles.pressContainer}>
           <TouchableWithoutFeedback
-            onPressIn={() => progress.stopAnimation()}
-            onLongPress={() => {setPressed(true)
+            onPressIn={() => {}}
+            onLongPress={() => {
+             setPressed(true)
              videoPlayer.current.pauseAsync()
+             pauseAnimation()
             }}
             onPressOut={() => {
               setPressed(false);
-              startAnimation();
+              resumeAnimation()
               videoPlayer.current.playAsync();
             }}
             onPress={() => {
@@ -294,13 +338,14 @@ const onEnd= () => {
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             onPressIn={() => {}}
-            onLongPress={() => {setPressed(true)
+            onLongPress={() => {
+              setPressed(true)
                videoPlayer.current.pauseAsync()
-                progress.stopAnimation()
+               pauseAnimation()
               }}
               onPressOut={() => {
                 setPressed(false);
-                startAnimation();
+                resumeAnimation()
                  videoPlayer.current.playAsync();
               }}
             onPress={() => {
