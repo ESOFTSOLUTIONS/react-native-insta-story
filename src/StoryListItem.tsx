@@ -277,12 +277,12 @@ const onEnd= () => {
           <TouchableWithoutFeedback
             onPressIn={() => progress.stopAnimation()}
             onLongPress={() => {setPressed(true)
-            status.isPlaying ? videoPlayer.current.pauseAsync() : videoPlayer.current.playAsync();
+             videoPlayer.current.pauseAsync()
             }}
             onPressOut={() => {
               setPressed(false);
               startAnimation();
-              status.isPlaying ? videoPlayer.current.pauseAsync() : videoPlayer.current.playAsync();
+              videoPlayer.current.playAsync();
             }}
             onPress={() => {
               previous();
@@ -295,13 +295,13 @@ const onEnd= () => {
           <TouchableWithoutFeedback
             onPressIn={() => {}}
             onLongPress={() => {setPressed(true)
-              status.isPlaying ? videoPlayer.current.pauseAsync() : videoPlayer.current.playAsync();
-              progress.stopAnimation()
+               videoPlayer.current.pauseAsync()
+                progress.stopAnimation()
               }}
               onPressOut={() => {
                 setPressed(false);
                 startAnimation();
-                status.isPlaying ? videoPlayer.current.pauseAsync() : videoPlayer.current.playAsync();
+                 videoPlayer.current.playAsync();
               }}
             onPress={() => {
               next();
