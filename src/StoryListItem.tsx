@@ -479,7 +479,6 @@ swipeUpBtn: {
     position: 'absolute',
     right: 0,
     left: 0,
-    alignItems: 'center',
     bottom: Platform.OS == 'ios' ? 20 : 50
 },
 video: {
