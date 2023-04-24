@@ -223,6 +223,15 @@ export const StoryListItem = ({
     }
   }
 
+  const handleResetPress = async () => {
+    if (videoPlayer.current) {
+      const status = await videoPlayer.current.getStatusAsync();
+      if (status.isLoaded) {
+        await videoPlayer.current.setPositionAsync(0);
+      }
+    }
+  };
+
   function close(state: NextOrPrevious) {
     let data = [...content];
     data.map((x) => (x.finish = 0));
@@ -329,8 +338,11 @@ const onEnd= () => {
               videoPlayer.current.playAsync();
             }}
             onPress={() => {
-              previous();
+              if(current !== 0){
+                handleResetPress()
+              }
               if (!pressed && load) {
+                previous();
               }
             }}
           >
@@ -349,8 +361,12 @@ const onEnd= () => {
                  videoPlayer.current.playAsync();
               }}
             onPress={() => {
-              next();
-              if (!pressed && !load) {
+              if(current === 0 ){
+                handleResetPress()
+              }
+              
+              if (!pressed) {
+                next();
               }
             }}
           >

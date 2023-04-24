@@ -120,16 +120,16 @@ export const Story = ({
   const renderCube = () => {
     if (Platform.OS == 'ios') {
       return (
-        <CubeNavigationHorizontal
-          ref={cube}
-          callBackAfterSwipe={(x: any) => {
-            if (x != currentPage) {
-              setCurrentPage(parseInt(x));
-            }
-          }}
-        >
-          {renderStoryList()}
-        </CubeNavigationHorizontal>
+        // <CubeNavigationHorizontal
+        //   ref={cube}
+        //   callBackAfterSwipe={(x: any) => {
+        //     if (x != currentPage) {
+        //       setCurrentPage(parseInt(x));
+        //     }
+        //   }}
+        // >
+          renderStoryList()
+        /* </CubeNavigationHorizontal> */
       );
     } else {
       return (
