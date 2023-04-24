@@ -130,6 +130,8 @@ export const StoryListItem = ({
         } else {
           setRemainingDuration(duration)
           previous()
+          setCurrent(0)
+            start()
         }
       }
     });
@@ -200,6 +202,10 @@ export const StoryListItem = ({
       }
     } else {
       // the next content is empty
+      setCurrent(0)
+      progress.setValue(0)
+      let data = [...content];
+    data.map((x) => (x.finish = 0));
       // close('next');
     }
   }
@@ -218,6 +224,8 @@ export const StoryListItem = ({
         videoPlayer.current.playAsync();
       }
     } else {
+      // setCurrent(0)
+      // progress.setValue(0)
       // the previous content is empty
       // close('previous');
     }
@@ -341,8 +349,8 @@ const onEnd= () => {
               if(current !== 0){
                 handleResetPress()
               }
+              previous();
               if (!pressed && load) {
-                previous();
               }
             }}
           >
