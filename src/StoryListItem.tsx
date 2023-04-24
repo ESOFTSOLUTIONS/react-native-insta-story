@@ -335,7 +335,12 @@ const onEnd= () => {
          
         </View>
         {customUpperTextComponent}
-        <View style={styles.pressContainer}>
+        <View style={styles.pressContainer} onTouchMove={() => setPressed(true)} onTouchEnd={() => {
+          setPressed(false)
+          resumeAnimation()
+                   videoPlayer.current.playAsync();
+          }}>
+          
           <TouchableWithoutFeedback
             onPressIn={() => {}}
             onLongPress={() => {
@@ -344,9 +349,10 @@ const onEnd= () => {
              pauseAnimation()
             }}
             onPressOut={() => {
-              setPressed(false);
-              resumeAnimation()
-              videoPlayer.current.playAsync();
+              if(pressed == false) {
+                resumeAnimation()
+                videoPlayer.current.playAsync();
+              }
             }}
             onPress={() => {
               if(current !== 0){
@@ -357,7 +363,11 @@ const onEnd= () => {
               }
             }}
           >
-            <View style={{ flex: 1 }} />
+            <View style={{ flex: 1 }}  onTouchMove={() => setPressed(true)} onTouchEnd={() => {
+          setPressed(false)
+          resumeAnimation()
+                   videoPlayer.current.playAsync();
+          }}/>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             onPressIn={() => {}}
@@ -367,9 +377,10 @@ const onEnd= () => {
                pauseAnimation()
               }}
               onPressOut={() => {
-                setPressed(false);
-                resumeAnimation()
-                 videoPlayer.current.playAsync();
+                if(pressed === false) {
+                  resumeAnimation()
+                   videoPlayer.current.playAsync();
+                }
               }}
             onPress={() => {
               if(current === 0 ){
@@ -381,7 +392,11 @@ const onEnd= () => {
               }
             }}
           >
-            <View style={{ flex: 1 }} />
+            <View style={{ flex: 1 }}  onTouchMove={() => setPressed(true)} onTouchEnd={() => {
+          setPressed(false)
+          resumeAnimation()
+                   videoPlayer.current.playAsync();
+          }}/>
           </TouchableWithoutFeedback>
         </View>
       </View>
