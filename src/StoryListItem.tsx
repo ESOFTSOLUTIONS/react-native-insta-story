@@ -294,7 +294,7 @@ const onEnd= () => {
               }}
               shouldPlay
               volume={0.0}
-              resizeMode={ResizeMode.STRETCH}
+              resizeMode={ResizeMode.COVER}
               // onTouchStart={previous}
             />
           ) : (
@@ -363,11 +363,7 @@ const onEnd= () => {
               }
             }}
           >
-            <View style={{ flex: 1 }}  onTouchMove={() => setPressed(true)} onTouchEnd={() => {
-          setPressed(false)
-          resumeAnimation()
-                   videoPlayer.current.playAsync();
-          }}/>
+            <View style={{ flex: 1 }} />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
             onPressIn={() => {}}
@@ -392,11 +388,7 @@ const onEnd= () => {
               }
             }}
           >
-            <View style={{ flex: 1 }}  onTouchMove={() => setPressed(true)} onTouchEnd={() => {
-          setPressed(false)
-          resumeAnimation()
-                   videoPlayer.current.playAsync();
-          }}/>
+            <View style={{ flex: 1 }}  />
           </TouchableWithoutFeedback>
         </View>
       </View>
