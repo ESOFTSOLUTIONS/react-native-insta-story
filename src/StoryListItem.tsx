@@ -53,7 +53,7 @@ export const StoryListItem = ({
   );
   const [startTime, setStartTime] = useState(0)
   const [animation, setAnimation] = useState(null)
-  const [remainingDuration, setRemainingDuration] = useState(duration)
+  const [remainingDuration, setRemainingDuration] = useState(status.durationMillis)
 
   const [current, setCurrent] = useState(0);
   const videoPlayer = useRef();
@@ -87,6 +87,9 @@ export const StoryListItem = ({
   }, [currentPage]);
 
   const prevCurrent = usePrevious(current);
+  // useEffect(() => {
+  //   startAnimation()
+  // }, [status])
 
   useEffect(() => {
     if (!isNullOrWhitespace(prevCurrent)) {
@@ -110,31 +113,31 @@ export const StoryListItem = ({
   function start() {
     setLoad(false);
     progress.setValue(0);
-    startAnimation();
+      startAnimation();
   }
 
   function startAnimation() {
-    setStartTime(Date.now())
-    const anim =Animated.timing(progress, {
-      toValue: 1,
-      duration: remainingDuration,
-      useNativeDriver: false,
-      easing: Easing.linear
-    })
-    setAnimation(anim)
-    anim.start(({ finished }) => {
-      if (finished) {
-        if(current !== content.length - 1) {
-          next();
-          setRemainingDuration(duration)
-        } else {
-          setRemainingDuration(duration)
-          previous()
-          setCurrent(0)
-            start()
-        }
-      }
-    });
+      setStartTime(Date.now())
+      const anim =Animated.timing(progress, {
+        toValue: 1,
+        duration: status.durationMillis ? status.durationMillis : duration,
+        useNativeDriver: false,
+        easing: Easing.linear
+      })
+      setAnimation(anim)
+        anim.start(({ finished }) => {
+          if (finished) {
+            if(current !== content.length - 1) {
+              next();
+              setRemainingDuration(status.durationMillis)
+            } else {
+              setRemainingDuration(status.durationMillis)
+              previous()
+              setCurrent(0)
+                start()
+            }
+          }
+        });
   }
 
   function pauseAnimation() {
@@ -158,9 +161,9 @@ export const StoryListItem = ({
         if (finished) {
           if (current !== content.length - 1) {
             next();
-            setRemainingDuration(duration)
+            setRemainingDuration(status.durationMillis)
           } else {
-            setRemainingDuration(duration)
+            setRemainingDuration(status.durationMillis)
             previous();
           }
         }
@@ -476,7 +479,7 @@ swipeUpBtn: {
     position: 'absolute',
     right: 0,
     left: 0,
-    // alignItems: 'center',
+    alignItems: 'center',
     bottom: Platform.OS == 'ios' ? 20 : 50
 },
 video: {
