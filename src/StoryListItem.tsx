@@ -284,6 +284,12 @@ const onEnd= () => {
               source={{ uri: content[current].story_image }}
               ref={videoPlayer}
               style={styles.video}
+              videoStyle={{
+                flex: 1,
+                width: '100%',
+                height: '100%',
+                alignSelf: "center",
+              }}
               onLoad={onLoad}
               isLooping
               onPlaybackStatusUpdate={(playbackStatus) => {
