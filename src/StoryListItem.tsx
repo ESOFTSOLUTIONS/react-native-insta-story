@@ -29,7 +29,6 @@ const { width, height } = Dimensions.get('window');
 
 export const StoryListItem = ({
   index,
-  key,
   profileImage,
   profileName,
   duration,
@@ -54,6 +53,7 @@ export const StoryListItem = ({
   const [startTime, setStartTime] = useState(0)
   const [animation, setAnimation] = useState(null)
   const [remainingDuration, setRemainingDuration] = useState(status.durationMillis)
+  const key = index
 
   const [current, setCurrent] = useState(0);
   const videoPlayer = useRef();
@@ -311,7 +311,7 @@ const onEnd= () => {
           )}
         </View>
       </SafeAreaView>
-      <View style={{ flexDirection: 'column', flex: 1 }}>
+      <View style={{ flexDirection: 'column', flex: 1}}>
         <View style={styles.animationBarContainer}>
           {content.map((index, key) => {
             return (
@@ -446,7 +446,7 @@ spinnerContainer: {
 },
 animationBarContainer: {
     flexDirection: 'row',
-    paddingTop: 10,
+    paddingTop: Platform.OS === 'ios' ? 0 : 40,
     paddingHorizontal: 10,
 },
 animationBackground: {

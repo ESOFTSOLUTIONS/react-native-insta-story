@@ -149,7 +149,7 @@ export const Story = ({
 
   return (
     <Fragment>
-      <View style={style}>
+      {/* <View style={style}>
         <StoryCircleListView
           handleStoryItemPress={_handleStoryItemPress}
           data={dataState}
@@ -159,24 +159,24 @@ export const Story = ({
           showText={showAvatarText}
           textStyle={avatarTextStyle}
         />
-      </View>
-      <Modal
+      </View> */}
+      <View
         style={{
           flex: 1,
           height: Dimensions.get('window').height,
           width: Dimensions.get('window').width,
         }}
-        isOpen={true}
-        onClosed={() => setIsModalOpen(true)}
-        position="center"
-        swipeToClose={false}
-        startOpen
-        swipeArea={250}
-        // backButtonClose
-        coverScreen={true}
+        // isOpen={true}
+        // onClosed={() => setIsModalOpen(true)}
+        // position="center"
+        // swipeToClose={false}
+        // startOpen
+        // swipeArea={250}
+        // // backButtonClose
+        // coverScreen={true}
       >
         {renderCube()}
-      </Modal>
+      </View>
     </Fragment>
   );
 };
