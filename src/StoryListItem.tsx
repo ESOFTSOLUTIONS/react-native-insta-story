@@ -143,10 +143,10 @@ export const StoryListItem = ({
   function pauseAnimation() {
     animation.stop()
     const elapsedTime = Date.now() - startTime
-    setRemainingDuration(remainingDuration - elapsedTime);
+    setRemainingDuration(status.durationMillis - elapsedTime);
 
   }
-  
+
 
   function resumeAnimation() {
     if (animation) {
